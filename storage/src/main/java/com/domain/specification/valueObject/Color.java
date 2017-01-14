@@ -14,16 +14,16 @@ public class Color {
 
     @Id
     @Column(name = "GGDM")
-    private long id;
+    private String id;
 
     @Column(name = "GGMC")
     private String color;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

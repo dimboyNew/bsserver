@@ -8,6 +8,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "CangKu")
+@Embeddable
 @NamedQuery(name = "getShop", query = "select DISTINCT shopName as name from  Shop ")
 public class Shop {
 
@@ -16,7 +17,22 @@ public class Shop {
     private String shopName;
 
     @OneToMany
-    @Column(name = "CKDM")
+    @JoinTable(name= "CangKu",joinColumns = @JoinColumn(name = "CKDM"))
     private List<Storage> storages;
 
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public void setStorages(List<Storage> storages) {
+        this.storages = storages;
+    }
+
+    public List<Storage> getStorages() {
+        return storages;
+    }
 }

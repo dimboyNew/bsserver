@@ -19,7 +19,8 @@ public interface StorageRepository extends JpaRepository<Storage, String> {
     @RestResource(path = "by-storageCode")
     public List<Storage> findByStorageCode(@RequestParam String storageCode);
 
-    @Query(value = "select goodsCode,storageCode,color,sum(num) as num from Storage  group by goodsCode,storageCode,color having  sum(num) >0 ")
-    public List<Object[]> getStorageView();
+    //@Query(value = "select goodsCode,storageCode,color,sum(num) as num from Storage s join s.color group by goodsCode,storageCode,color having  sum(num) >0 ")
+    @Query(value = "select s.color,s.goodsCode,s.storageCode,s.size,SUM(s.num) from Storage s left join s.color c left join s.size z group by s.color,c.id,c.color,s.goodsCode,s.storageCode,s.size,z.id,z.size  having SUM(s.num) > 0 ")
+    public List<Storage> getStorageView();
 
 }
