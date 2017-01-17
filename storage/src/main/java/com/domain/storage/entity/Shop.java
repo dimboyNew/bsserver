@@ -8,16 +8,33 @@ import java.util.List;
  */
 @Entity
 @Table(name = "CangKu")
-@Embeddable
-@NamedQuery(name = "getShop", query = "select DISTINCT shopName as name from  Shop ")
+//@SqlResultSetMapping(name = "getShop",
+//        entities=@EntityResult(entityClass=Shop.class,
+//        fields = {
+//                @FieldResult(name="shopName", column = "CKMC")
+//        }),
+//        columns = { @ColumnResult(name = "shopName")})
+//@SqlResultSetMapping("select DISTINCT shopName as name from  Shop)
 public class Shop {
 
     @Id
     @Column(name = "CKMC")
     private String shopName;
 
-    @OneToMany
-    @JoinTable(name= "CangKu",joinColumns = @JoinColumn(name = "CKDM"))
+    @Column(name = "CKDM")
+    private String storageCode;
+
+    public String getStorageCode() {
+        return storageCode;
+    }
+
+    public void setStorageCode(String storageCode) {
+        this.storageCode = storageCode;
+    }
+
+    //    @OneToMany(fetch = FetchType.EAGER)//(mappedBy = "shop")
+//    @JoinColumn(name = "CKDM")
+    @Transient
     private List<Storage> storages;
 
     public String getShopName() {

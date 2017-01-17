@@ -32,7 +32,7 @@ public class StorageController {
 
         sr.getStorageView();
         List<Storage> storages = sr.findAll();
-
+        storages = sr.getStorageView();
         return storages;
     }
 

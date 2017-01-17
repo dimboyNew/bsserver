@@ -1,7 +1,5 @@
 package com.domain.storage.service.impl;
 
-import com.domain.specification.valueObject.Color;
-import com.domain.specification.valueObject.Size;
 import com.domain.storage.entity.Storage;
 import com.domain.storage.service.GoodsStorageCalculateService;
 import org.springframework.stereotype.Service;
@@ -17,17 +15,28 @@ import java.util.Map;
 @Service
 public class GoodsStorageCalculateServiceImpl implements GoodsStorageCalculateService {
     @Override
-    public Map<String,Storage> add(Map<String,Storage> s1, Map<String,Storage> s2) {
+    public Map<String, Storage> add(Map<String, Storage> s1, Map<String, Storage> s2) {
         List<Storage> storages = new ArrayList<>();
 
+        if(s2 == null){
+            return s1;
+        }
 
         s2.keySet().forEach(
-                s->{
-                    if(s1.get(s) == null){
-                        s1.put(s,s2.get(s));
-                    }else{
+                s -> {
+
+                    if (s1 == null || s1.get(s) == null || s2 == null) {
+                        if(s2 == null) {
+                            s1.put(s, null);
+                        }else{
+                            s1.put(s, s2.get(s));
+                        }
+
+
+
+                    }else {
                         s1.get(s).setNum(s1.get(s).getNum());
-                        s1.put(s,s1.get(s));
+                        s1.put(s, s1.get(s));
                     }
                 }
         );
@@ -59,23 +68,27 @@ public class GoodsStorageCalculateServiceImpl implements GoodsStorageCalculateSe
     }
 
     static final String APPENDIX = ",";
-    public Map<String,Map<String,Storage>> groupStorages(List<Storage> storages){
 
-        Map<String,Map<String,Storage>> map = new HashMap<>();
+    public Map<String, Map<String, Storage>> groupStorages(List<Storage> storages) {
+
+        Map<String, Map<String, Storage>> map = new HashMap<>();
         storages.forEach(
 
                 s -> {
-                    Map<String,Storage> value = map.get(s.getStorageCode()) == null ? new HashMap<>() : map.get(s.getStorageCode());
+                    Map<String, Storage> value = map.get(s.getStorageCode()) == null ? new HashMap<>() : map.get(s.getStorageCode());
 
-                    String goodsKey = s.getGoodsCode() + APPENDIX + s.getColor().getId()+ APPENDIX + s.getSize().getId( );
+                    String goodsKey = s.getGoodsCode() + APPENDIX + s.getColor().getId() + APPENDIX + s.getSize().getId();
 
-                    if(value.get(goodsKey) != null) {value.get(goodsKey).setNum(s.getNum());};
+                    if (value.get(goodsKey) != null) {
+                        value.get(goodsKey).setNum(s.getNum());
+                    }
+                    ;
 
                     Storage goodsNum = value.get(goodsKey) == null ? new Storage(s) : value.get(goodsKey);
 
                     value.put(goodsKey, goodsNum);
 
-                    map.put(s.getStorageCode(),value);
+                    map.put(s.getStorageCode(), value);
                 }
         );
 

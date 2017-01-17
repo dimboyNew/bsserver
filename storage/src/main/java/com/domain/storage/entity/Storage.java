@@ -11,6 +11,7 @@ import java.util.HashMap;
  */
 @Entity
 @Table(name = "VW_CKJXCMX")
+
 @NamedQuery(name = "getStorageGoods", query = "select goodsCode,storageCode, sum(num) as num from Storage group by goodsCode,storageCode having  sum(num) >0 ")
 public class Storage {
 
@@ -24,8 +25,25 @@ public class Storage {
     @Column(name = "sl")
     private Long num;
 
+    @Override
+    public String toString() {
+        return storageCode+goodsCode+color.getColor()+size.getSize() + num;
+    }
+
+    /*@ManyToOne
+    @JoinTable(name="CangKu",inverseJoinColumns = @JoinColumn(name="CKDM"))
+    private Shop shop;
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }*/
+
     @OneToOne
-    @JoinColumn(name = "GG1DM",referencedColumnName = "GGDM")
+    @JoinColumn(name = "GG1DM", referencedColumnName = "GGDM")
     //@Column(name = "GG1DM")
     //private Long colorId;
     private Color color;
@@ -79,12 +97,12 @@ public class Storage {
         this.num = num;
     }
 
-    public Storage(){
+    public Storage() {
 
     }
 
     public Storage(Storage storage) {
-        if (storage == null){
+        if (storage == null) {
             return;
         }
 
@@ -92,6 +110,16 @@ public class Storage {
         this.setColor(storage.getColor());
         this.setSize(storage.getSize());
         this.setNum(storage.getNum());
+    }
+
+    public Storage(String goodsCode,String storageCode,Color color,Size size,Long num) {
+
+
+        this.setGoodsCode(goodsCode);
+        this.setStorageCode(storageCode);
+        this.setColor(color);
+        this.setSize(size);
+        this.setNum(num);
     }
 
 }
